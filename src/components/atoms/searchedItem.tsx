@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image
 } from 'react-native';
 
 type ItemList = {
@@ -11,15 +12,22 @@ type ItemList = {
     localTime: string
     temperatureC: string
     temperatureF: string
+    icon: string
   }
 
-const SearchedItem = ({city, country, localTime, temperatureC, temperatureF}: ItemList) => {
+const SearchedItem = ({city, country, localTime, temperatureC, temperatureF, icon}: ItemList) => {
     return (
       <View style={styles.wrapper}>
-        <View>
+        <View style={styles.flex}>
           <Text style={styles.font30}>{city}</Text>
           <Text style={styles.font20}>{country}</Text>
         </View>
+        <Image 
+          style={styles.tinyLogo}
+          source={{
+            uri: `https:${icon}`,
+          }}
+          />
         <View>
           <Text style={styles.font40}>{temperatureC}C/{temperatureF}F</Text>
           <Text style={styles.font20}>{localTime}</Text>
@@ -48,6 +56,13 @@ const SearchedItem = ({city, country, localTime, temperatureC, temperatureF}: It
     },
     font20: {
       fontSize: 20,
+    },
+    tinyLogo: {
+      width: 50,
+      height: 50,
+    },
+    flex: {
+      flex: 1,
     }
   });
 

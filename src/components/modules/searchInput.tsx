@@ -15,6 +15,7 @@ const DATA = [
       localTime: '2021-07-22 15:24',
       temperatureC: '20',
       temperatureF: '200',
+      icon: '//cdn.weatherapi.com/weather/64x64/day/113.png'
     },
     {
       city: 'Katowice',
@@ -22,6 +23,7 @@ const DATA = [
       localTime: '2021-07-22 15:24',
       temperatureC: '20',
       temperatureF: '200',
+      icon: '//cdn.weatherapi.com/weather/64x64/day/113.png'
     },
     {
       city: 'Berlin',
@@ -29,6 +31,7 @@ const DATA = [
       localTime: '2021-07-22 15:24',
       temperatureC: '20',
       temperatureF: '200',
+      icon: '//cdn.weatherapi.com/weather/64x64/day/113.png'
     },
   ];
 
@@ -40,6 +43,7 @@ const SearchInput:FC = () => {
           localTime={item.localTime} 
           temperatureC={item.temperatureC}
           temperatureF={item.temperatureF}
+          icon={item.icon}
           />
       );
     return (
