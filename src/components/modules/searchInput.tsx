@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   TextInput,
   FlatList,
