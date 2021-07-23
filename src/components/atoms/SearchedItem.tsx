@@ -8,9 +8,7 @@ type Props = {
 const SearchedItem: FC<Props> = ({ name }) => {
   return (
     <View style={styles.wrapper}>
-      <View>
-        <Text style={styles.font30}>{name}</Text>
-      </View>
+      <Text style={styles.font30}>{name}</Text>
     </View>
   );
 };
