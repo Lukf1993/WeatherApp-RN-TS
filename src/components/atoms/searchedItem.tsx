@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
-type ItemList = {
+type Props = {
   city: string;
   country: string;
   localTime: string;
@@ -10,14 +10,14 @@ type ItemList = {
   icon: string;
 };
 
-const SearchedItem = ({
+const SearchedItem: FC<Props> = ({
   city,
   country,
   localTime,
   temperatureC,
   temperatureF,
   icon,
-}: ItemList) => {
+}) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.flex}>
