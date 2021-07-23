@@ -1,12 +1,12 @@
 import React, {
   FC,
-  //   useState,
+  useState,
   createContext,
   useContext,
   ReactNode,
   //   useEffect,
 } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 
 const currentData = {
   location: {
@@ -82,99 +82,6 @@ const astronomyData = {
   },
 };
 
-const searchData = [
-  {
-    id: 1958922,
-    name: 'Katowice, Poland',
-    region: '',
-    country: 'Poland',
-    lat: 50.27,
-    lon: 19.02,
-    url: 'katowice-poland',
-  },
-  {
-    id: 1983665,
-    name: 'Stalinogrod, Poland',
-    region: '',
-    country: 'Poland',
-    lat: 50.27,
-    lon: 19.02,
-    url: 'stalinogrod-poland',
-  },
-  {
-    id: 1962618,
-    name: 'Koszutka, Poland',
-    region: '',
-    country: 'Poland',
-    lat: 50.27,
-    lon: 19.02,
-    url: 'koszutka-poland',
-  },
-  {
-    id: 1983664,
-    name: 'Stalinograd, Poland',
-    region: '',
-    country: 'Poland',
-    lat: 50.27,
-    lon: 19.02,
-    url: 'stalinograd-poland',
-  },
-  {
-    id: 1983663,
-    name: 'Stalinogorod, Poland',
-    region: '',
-    country: 'Poland',
-    lat: 50.27,
-    lon: 19.02,
-    url: 'stalinogorod-poland',
-  },
-  {
-    id: 1958921,
-    name: 'Katowice-Dab, Poland',
-    region: '',
-    country: 'Poland',
-    lat: 50.27,
-    lon: 19.0,
-    url: 'katowice-dab-poland',
-  },
-  {
-    id: 1958925,
-    name: 'Kattowice-Nord, Poland',
-    region: '',
-    country: 'Poland',
-    lat: 50.27,
-    lon: 19.0,
-    url: 'kattowice-nord-poland',
-  },
-  {
-    id: 1950529,
-    name: 'Domb, Poland',
-    region: '',
-    country: 'Poland',
-    lat: 50.27,
-    lon: 19.0,
-    url: 'domb-poland',
-  },
-  {
-    id: 1957685,
-    name: 'Josefsdorf, Poland',
-    region: '',
-    country: 'Poland',
-    lat: 50.28,
-    lon: 19.02,
-    url: 'josefsdorf-poland',
-  },
-  {
-    id: 1957686,
-    name: 'Josephsdorf, Poland',
-    region: '',
-    country: 'Poland',
-    lat: 50.28,
-    lon: 19.02,
-    url: 'josephsdorf-poland',
-  },
-];
-
 type Props = {
   children: ReactNode;
 };
@@ -182,10 +89,21 @@ type Props = {
 const ApiContext = createContext({});
 
 export const ApiContextProvider: FC<Props> = ({ children }) => {
-  //   const API_KEY: string = '02e2fc9543714b12899111113212107';
-  //   const API_URL: string = 'http://api.weatherapi.com/v1/';
+  const API_KEY: string = '02e2fc9543714b12899111113212107';
+  const API_URL: string = 'http://api.weatherapi.com/v1/';
+
+  const [searchData, setSearchData] = useState([]);
+
+  const searchCity = (city: string) => {
+    axios
+      .get(`${API_URL}search.json?key=${API_KEY}&q=${city}`)
+      .then((res) => setSearchData(res.data))
+      .catch((res) => console.log(res));
+  };
+
   return (
-    <ApiContext.Provider value={{ currentData, astronomyData, searchData }}>
+    <ApiContext.Provider
+      value={{ currentData, astronomyData, searchData, searchCity }}>
       {children}
     </ApiContext.Provider>
   );
