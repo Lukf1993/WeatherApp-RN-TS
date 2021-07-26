@@ -13,10 +13,9 @@ import SearchedItem from '~components/atoms/SearchedItem';
 type Props = {
   [key: string]: any;
 };
-type Context = Props;
 
 const SearchInput: FC<Props> = () => {
-  const apiContext: Context = useApiContext();
+  const apiContext: Props = useApiContext();
 
   const onChange = (
     e: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -33,7 +32,7 @@ const SearchInput: FC<Props> = () => {
         placeholder="City"
       />
       {apiContext.searchData.map((item: Props) => (
-        <SearchedItem name={item.name} />
+        <SearchedItem key={item.name} name={item.name} />
       ))}
     </View>
   );
