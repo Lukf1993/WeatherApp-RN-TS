@@ -1,29 +1,38 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { SafeAreaView, ScrollView } from 'react-native';
 import CityBox from '~components/modules/CityBox';
+import { useApiContext } from '~context/apiContext';
 
-type Favorite = {
-  city: string;
-  country: string;
-  date: string;
-  icon: string;
-};
 type Props = {
-  data: Array<Favorite>;
+  [key: string]: any;
+};
+type Favorite = {
+  location: {
+    name: string;
+    country: string;
+    localtime: string;
+  };
+  current: {
+    condition: {
+      icon: string;
+    };
+  };
 };
 
-const FavoriteView: FC<Props> = ({ data }) => {
+const FavoriteView = () => {
+  const apiContext: Props = useApiContext();
   return (
     <SafeAreaView>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        {data.map((item) => {
+        {apiContext.favorite.map((item: Favorite, index: number) => (
           <CityBox
-            city={item.city}
-            country={item.country}
-            date={item.date}
-            icon={item.icon}
-          />;
-        })}
+            key={item.location.name + index}
+            city={item.location.name}
+            country={item.location.country}
+            date={item.location.localtime}
+            icon={item.current.condition.icon}
+          />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
