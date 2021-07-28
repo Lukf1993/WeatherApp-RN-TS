@@ -1,8 +1,16 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, View, StyleSheet, Text } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import CityBox from '~components/modules/CityBox';
 import { useApiContext } from '~context/apiContext';
 import Title from '~components/atoms/Title';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   [key: string]: any;
@@ -22,6 +30,7 @@ type Favorite = {
 
 const FavoriteView = () => {
   const apiContext: Props = useApiContext();
+  const navigation = useNavigation();
   return (
     <SafeAreaView>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
@@ -34,13 +43,21 @@ const FavoriteView = () => {
           </View>
         ) : (
           apiContext.favorite.map((item: Favorite, index: number) => (
-            <CityBox
-              key={item.location.name + index}
-              city={item.location.name}
-              country={item.location.country}
-              date={item.location.localtime}
-              icon={item.current.condition.icon}
-            />
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('City', {
+                  location: item.location,
+                  current: item.current,
+                })
+              }>
+              <CityBox
+                key={item.location.name + index}
+                city={item.location.name}
+                country={item.location.country}
+                date={item.location.localtime}
+                icon={item.current.condition.icon}
+              />
+            </TouchableOpacity>
           ))
         )}
       </ScrollView>
