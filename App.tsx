@@ -1,21 +1,14 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { ApiContextProvider } from '~context/apiContext';
-import MainView from '~screens/MainView';
-// import CityView from '~screens/CityView';
-import FavoriteView from '~screens/FavoriteView';
+import MainView from '~screens/MainScreen';
+import CityView from '~screens/CityScreen';
+import FavoriteView from '~screens/FavoriteScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
 
-function HomeScreen() {
-  return <MainView />;
-}
-function Favorite() {
-  return <FavoriteView />;
-}
-
-const App: FC = () => {
+const App = () => {
   return (
     <ApiContextProvider>
       <NavigationContainer>
@@ -30,8 +23,9 @@ const App: FC = () => {
               paddingBottom: 15,
             },
           }}>
-          <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Favorite" component={Favorite} />
+          <Tab.Screen name="Home" component={MainView} />
+          <Tab.Screen name="Favorite" component={FavoriteView} />
+          <Tab.Screen name="City" component={CityView} />
         </Tab.Navigator>
       </NavigationContainer>
     </ApiContextProvider>
