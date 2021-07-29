@@ -31,7 +31,8 @@ const SearchInput: FC<Props> = () => {
         style={styles.searchInput}
         placeholder="City"
       />
-      {apiContext.searchData.map((item: Props) => (
+      {apiContext.searchData &&
+        apiContext.searchData.map((item: Props) => (
         <SearchedItem key={item.name} name={item.name} />
       ))}
     </View>

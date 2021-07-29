@@ -28,7 +28,7 @@ type Favorite = {
   };
 };
 
-const FavoriteView = () => {
+const FavoriteScreen = () => {
   const apiContext: Props = useApiContext();
   const navigation = useNavigation();
   return (
@@ -44,6 +44,7 @@ const FavoriteView = () => {
         ) : (
           apiContext.favorite.map((item: Favorite, index: number) => (
             <TouchableOpacity
+              key={item.location.name + index}
               onPress={() =>
                 navigation.navigate('City', {
                   location: item.location,
@@ -51,7 +52,6 @@ const FavoriteView = () => {
                 })
               }>
               <CityBox
-                key={item.location.name + index}
                 city={item.location.name}
                 country={item.location.country}
                 date={item.location.localtime}
@@ -74,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FavoriteView;
+export default FavoriteScreen;

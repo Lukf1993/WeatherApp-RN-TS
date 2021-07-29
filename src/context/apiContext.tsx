@@ -5,7 +5,7 @@ import React, {
   useContext,
   ReactNode,
 } from 'react';
-import  {fetchData}  from '~services/api';
+import { fetchData } from '~services/api';
 
 type Props = {
   children: ReactNode;
@@ -15,7 +15,7 @@ type FavoriteArr = Array<FavoriteData>;
 
 type FavoriteData = {
   location: {
-    name: string
+    name: string;
   };
   current: unknown;
   astro: unknown;
@@ -35,27 +35,30 @@ const API_KEY = '02e2fc9543714b12899111113212107';
 const ApiContext = createContext({});
 
 export const ApiContextProvider: FC<Props> = ({ children }) => {
-
   const [searchData, setSearchData] = useState<SearchData>();
   const [favorite, setFavorite] = useState<FavoriteArr>([]);
 
-  const searchCity = (city: string) => {
-    fetchData(`search.json?key=${API_KEY}&q=${city}`).then(res => setSearchData(res.data)) ;
-  }
+  const searchCity = async (city: string) => {
+    fetchData(`search.json?key=${API_KEY}&q=${city}`).then((data) =>
+      setSearchData(data),
+    );
+  };
 
   const addToFavorite = (city: string) => {
-    fetchData(`current.json?key=${API_KEY}&q=${city}&aqi=no`)
-      .then(res => {
-        fetchData(`astronomy.json?key=${API_KEY}&q=${city}&dt=2021-07-28`)
-          .then(r => {
-            setFavorite([
-              ...favorite,
-               { location: res.location,
-                current: res.current,
-                astro: r.data.astronomy.astro,}
-            ])
-          })
-      })
+    fetchData(`current.json?key=${API_KEY}&q=${city}&aqi=no`).then((res) => {
+      fetchData(`astronomy.json?key=${API_KEY}&q=${city}&dt=2021-07-28`).then(
+        (r) => {
+          setFavorite([
+            ...favorite,
+            {
+              location: res.location,
+              current: res.current,
+              astro: r.astronomy.astro,
+            },
+          ]);
+        },
+      );
+    });
   };
 
   return (
@@ -64,14 +67,11 @@ export const ApiContextProvider: FC<Props> = ({ children }) => {
         addToFavorite,
         searchCity,
         searchData,
-        favorite
+        favorite,
       }}>
       {children}
     </ApiContext.Provider>
-  )
+  );
 };
 
 export const useApiContext = () => useContext(ApiContext);
-
-
-

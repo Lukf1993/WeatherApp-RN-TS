@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import SearchInput from '~components/modules/SearchInput';
 
-const MainView = () => {
+const MainScreen = () => {
   return (
     <SafeAreaView>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainView;
+export default MainScreen;

@@ -8,7 +8,7 @@ type Props = {
   [key: string]: any;
 };
 
-const CityView = () => {
+const CityScreen = () => {
   const route: Props = useRoute();
   return (
     <SafeAreaView>
@@ -25,4 +25,4 @@ const CityView = () => {
   );
 };
 
-export default CityView;
+export default CityScreen;
