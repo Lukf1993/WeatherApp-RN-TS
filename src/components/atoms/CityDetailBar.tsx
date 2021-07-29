@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 type Props = {
   title: string;
-  value: string;
+  value: string | number;
 };
 
 const CityDetailBar: FC<Props> = ({ title, value }) => {
