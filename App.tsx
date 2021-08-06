@@ -1,30 +1,41 @@
 import React, { FC } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ApiContextProvider } from '~context/apiContext';
 import MainView from '~screens/MainView';
-import CityView from '~screens/CityView';
+// import CityView from '~screens/CityView';
+import FavoriteView from '~screens/FavoriteView';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+const Tab = createBottomTabNavigator();
+
+function HomeScreen() {
+  return <MainView />;
+}
+function Favorite() {
+  return <FavoriteView />;
+}
 
 const App: FC = () => {
   return (
-    <CityView />
-    // <MainView />
-    // <SafeAreaView>
-    //   <ScrollView contentInsetAdjustmentBehavior="automatic">
-    //     <View>
-    //       <Text style={styles.title}>Choose your city</Text>
-
-    //     </View>
-    //   </ScrollView>
-    // </SafeAreaView>
+    <ApiContextProvider>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName="Home"
+          tabBarOptions={{
+            labelStyle: {
+              fontSize: 20,
+            },
+            style: {
+              height: 50,
+              paddingBottom: 15,
+            },
+          }}>
+          <Tab.Screen name="Home" component={HomeScreen} />
+          <Tab.Screen name="Favorite" component={Favorite} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </ApiContextProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    marginTop: 20,
-    fontSize: 40,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-});
 
 export default App;
