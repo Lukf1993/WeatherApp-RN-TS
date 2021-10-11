@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-type Props = {
+interface IProps {
   title: string;
   value: string | number;
-};
+}
 
-const CityDetailBar: FC<Props> = ({ title, value }) => {
+const CityDetailBar: FC<IProps> = ({ title, value }) => {
   return (
     <View style={styles.flex}>
       <Text style={styles.text}>{title}</Text>

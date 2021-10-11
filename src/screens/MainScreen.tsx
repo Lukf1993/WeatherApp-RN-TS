@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import SearchInput from '~components/modules/SearchInput';
 
-const MainScreen = () => {
+const MainScreen:FC = () => {
   return (
     <SafeAreaView>
       <ScrollView contentInsetAdjustmentBehavior="automatic">

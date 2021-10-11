@@ -39,9 +39,9 @@ const FavoriteScreen:FC<TProps> = () => {
                 })
               }>
               <CityBox
-                city={item.location.name}
+                name={item.location.name}
                 country={item.location.country}
-                date={item.location.localtime}
+                localtime={item.location.localtime}
                 icon={item.current.condition.icon}
               />
             </TouchableOpacity>

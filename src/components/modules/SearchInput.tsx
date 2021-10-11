@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,7 +9,7 @@ import {
 import { useApiContext } from '~context/apiContext';
 import SearchedItem from '~components/atoms/SearchedItem';
 
-const SearchInput = () => {
+const SearchInput:FC = () => {
   const apiContext = useApiContext();
 
   const onChange = (
