@@ -5,10 +5,22 @@ import CityScreen from '~screens/CityScreen';
 import FavoriteScreen from '~screens/FavoriteScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const Tab = createBottomTabNavigator();
+const FavoriteStack = createStackNavigator();
 
+const FavoriteStackNavigator = () => {
+  return (
+    <FavoriteStack.Navigator>
+      <FavoriteStack.Screen name="Favorite" component={FavoriteScreen} />
+      <FavoriteStack.Screen name="City" component={CityScreen} />
+    </FavoriteStack.Navigator>
+  )
+}
 const App: FC = () => {
+
+
   return (
     <ApiContextProvider>
       <NavigationContainer>
@@ -24,12 +36,7 @@ const App: FC = () => {
             },
           }}>
           <Tab.Screen name="Home" component={MainScreen} />
-          <Tab.Screen name="Favorite" component={FavoriteScreen} />
-          <Tab.Screen
-            name="City"
-            component={CityScreen}
-            options={{ tabBarVisible: false }}
-          />
+          <Tab.Screen name="Favorite" component={FavoriteStackNavigator} />
         </Tab.Navigator>
       </NavigationContainer>
     </ApiContextProvider>
