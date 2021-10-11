@@ -6,9 +6,9 @@ import React, {
   ReactNode,
   useEffect
 } from 'react';
-import storage from '~services/storage';
 import { IFavorite, ISearch, IContext } from '~services/models/Defaults.interface';
 import { fetchData } from '~services/api';
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface IProps {
   children: ReactNode;
@@ -21,6 +21,24 @@ const ApiContext = createContext<IContext | null>(null);
 export const ApiContextProvider: FC<IProps> = ({ children }) => {
   const [searchData, setSearchData] = useState<ISearch[]>([]);
   const [favorite, setFavorite] = useState<IFavorite[]>([]);
+
+  const storeData = async (key: string, value: any) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem(key, jsonValue)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const getData = async (key: string) => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(key)
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch(e) {
+      console.error(e)
+    }
+  }
 
   const searchCity = async (city: string) => {
     fetchData(`search.json?key=${API_KEY}&q=${city}`).then((data) =>
@@ -49,11 +67,15 @@ export const ApiContextProvider: FC<IProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    storage.save({
-      key: 'favorite',
-      data: favorite,
-      expires: null
-    })
+    async function getStoredData() {
+      const value = await getData('favorite')
+      setFavorite(value)
+    }
+    getStoredData()
+  }, [])
+
+  useEffect(() => {
+    storeData('favorite', favorite)
   }, [favorite])
 
   const context: IContext = {
