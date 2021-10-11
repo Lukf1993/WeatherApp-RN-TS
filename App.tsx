@@ -1,21 +1,26 @@
 import React, { FC } from 'react';
 import { ApiContextProvider } from '~context/apiContext';
-import MainView from '~screens/MainView';
-// import CityView from '~screens/CityView';
-import FavoriteView from '~screens/FavoriteView';
+import MainScreen from '~screens/MainScreen';
+import CityScreen from '~screens/CityScreen';
+import FavoriteScreen from '~screens/FavoriteScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const Tab = createBottomTabNavigator();
+const FavoriteStack = createStackNavigator();
 
-function HomeScreen() {
-  return <MainView />;
+const FavoriteStackNavigator = () => {
+  return (
+    <FavoriteStack.Navigator>
+      <FavoriteStack.Screen name="Favorite" component={FavoriteScreen} />
+      <FavoriteStack.Screen name="City" component={CityScreen} />
+    </FavoriteStack.Navigator>
+  )
 }
-function Favorite() {
-  return <FavoriteView />;
-}
-
 const App: FC = () => {
+
+
   return (
     <ApiContextProvider>
       <NavigationContainer>
@@ -24,14 +29,14 @@ const App: FC = () => {
           tabBarOptions={{
             labelStyle: {
               fontSize: 20,
+              padding: 15,
             },
             style: {
               height: 50,
-              paddingBottom: 15,
             },
           }}>
-          <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Favorite" component={Favorite} />
+          <Tab.Screen name="Home" component={MainScreen} />
+          <Tab.Screen name="Favorite" component={FavoriteStackNavigator} />
         </Tab.Navigator>
       </NavigationContainer>
     </ApiContextProvider>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -10,26 +10,13 @@ import {
 import CityBox from '~components/modules/CityBox';
 import { useApiContext } from '~context/apiContext';
 import Title from '~components/atoms/Title';
+import { IContext, IFavorite } from '~services/models/Defaults.interface';
 import { useNavigation } from '@react-navigation/native';
 
-type Props = {
-  [key: string]: any;
-};
-type Favorite = {
-  location: {
-    name: string;
-    country: string;
-    localtime: string;
-  };
-  current: {
-    condition: {
-      icon: string;
-    };
-  };
-};
+type TProps = IContext
 
-const FavoriteView = () => {
-  const apiContext: Props = useApiContext();
+const FavoriteScreen:FC<TProps> = () => {
+  const apiContext = useApiContext();
   const navigation = useNavigation();
   return (
     <SafeAreaView>
@@ -37,13 +24,14 @@ const FavoriteView = () => {
         <View style={styles.center}>
           <Title text="Favorite" />
         </View>
-        {apiContext.favorite.length === 0 ? (
+         {apiContext?.favorite.length === 0 ? (
           <View style={styles.center}>
             <Text style={styles.font20}>You don't have favorites yet</Text>
           </View>
         ) : (
-          apiContext.favorite.map((item: Favorite, index: number) => (
+          apiContext?.favorite.map((item: IFavorite, index: number) => (
             <TouchableOpacity
+              key={item.location.name + index}
               onPress={() =>
                 navigation.navigate('City', {
                   location: item.location,
@@ -51,10 +39,9 @@ const FavoriteView = () => {
                 })
               }>
               <CityBox
-                key={item.location.name + index}
-                city={item.location.name}
+                name={item.location.name}
                 country={item.location.country}
-                date={item.location.localtime}
+                localtime={item.location.localtime}
                 icon={item.current.condition.icon}
               />
             </TouchableOpacity>
@@ -74,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FavoriteView;
+export default FavoriteScreen;

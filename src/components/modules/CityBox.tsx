@@ -1,21 +1,19 @@
 import React, { FC } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import Title from '~components/atoms/Title';
+import { ILocation } from '~services/models/Defaults.interface';
 
-type Props = {
-  city: string;
-  country: string;
-  date: string;
-  icon: string;
-};
+interface IProps extends ILocation {
+  icon: string
+}
 
-const CityBox: FC<Props> = ({ city, country, date, icon }) => {
+const CityBox: FC<IProps> = ({ name, country, localtime, icon }) => {
   return (
     <View style={styles.wrapper}>
       <View>
-        <Title text={city} />
+        <Title text={name} />
         <Text style={styles.font30}>{country}</Text>
-        <Text>{date}</Text>
+        <Text>{localtime}</Text>
       </View>
       <Image source={{ uri: `https:${icon}` }} style={styles.icon} />
     </View>

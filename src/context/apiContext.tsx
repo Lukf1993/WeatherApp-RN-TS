@@ -4,81 +4,89 @@ import React, {
   createContext,
   useContext,
   ReactNode,
-  //   useEffect,
+  useEffect
 } from 'react';
-import axios from 'axios';
+import { IFavorite, ISearch, IContext } from '~services/models/Defaults.interface';
+import { fetchData } from '~services/api';
+import AsyncStorage from '@react-native-community/async-storage';
 
-const astronomyData = {
-  location: {
-    name: 'London',
-    region: 'City of London, Greater London',
-    country: 'United Kingdom',
-    lat: 51.52,
-    lon: -0.11,
-    tz_id: 'Europe/London',
-    localtime_epoch: 1627039962,
-    localtime: '2021-07-23 12:32',
-  },
-  astronomy: {
-    astro: {
-      sunrise: '05:10 AM',
-      sunset: '09:03 PM',
-      moonrise: '08:23 PM',
-      moonset: '02:41 AM',
-      moon_phase: 'Waxing Gibbous',
-      moon_illumination: '87',
-    },
-  },
-};
-
-type Props = {
+interface IProps {
   children: ReactNode;
-};
+}
 
-type Favorite = {
-  location: {
-    name: string;
-  };
-  current: object;
-};
+const API_KEY = '02e2fc9543714b12899111113212107';
 
-type FavoriteArr = Array<Favorite>;
+const ApiContext = createContext<IContext | null>(null);
 
-const ApiContext = createContext({});
+export const ApiContextProvider: FC<IProps> = ({ children }) => {
+  const [searchData, setSearchData] = useState<ISearch[]>([]);
+  const [favorite, setFavorite] = useState<IFavorite[]>([]);
 
-export const ApiContextProvider: FC<Props> = ({ children }) => {
-  const API_KEY: string = '02e2fc9543714b12899111113212107';
-  const API_URL: string = 'http://api.weatherapi.com/v1/';
+  const storeData = async (key: string, value: any) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem(key, jsonValue)
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
-  const [searchData, setSearchData] = useState([]);
-  const [favorite, setFavorite] = useState<FavoriteArr>([]);
+  const getData = async (key: string) => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(key)
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch(e) {
+      console.error(e)
+    }
+  }
 
-  const searchCity = (city: string) => {
-    axios
-      .get(`${API_URL}search.json?key=${API_KEY}&q=${city}`)
-      .then((res) => {
-        setSearchData(res.data);
-      })
-      .catch((res) => console.log(res));
-  };
-  const addToFavorite = (city: string) => {
-    axios
-      .get(`${API_URL}current.json?key=${API_KEY}&q=${city}&aqi=no`)
-      .then((res) => {
-        setFavorite([...favorite, res.data]);
-      })
-      .catch((res) => console.log(res));
+  const searchCity = async (city: string) => {
+    fetchData(`search.json?key=${API_KEY}&q=${city}`).then((data) =>
+      setSearchData(data),
+    );
   };
 
+  const addToFavorite = (city: string, date: string) => {
+    fetchData(`current.json?key=${API_KEY}&q=${city}&aqi=no`).then((res) => {
+      fetchData(`astronomy.json?key=${API_KEY}&q=${city}&dt=${date}`).then(
+        (r) => {
+         const checkFavorite = favorite.find(item => city.includes(item.location.name))
+         if(!checkFavorite) {
+           setFavorite([
+             ...favorite,
+             {
+               location: res.location,
+               current: res.current,
+               astro: r.astronomy.astro,
+             },
+           ]);
+         }
+        },
+      );
+    });
+  };
+
+  useEffect(() => {
+    async function getStoredData() {
+      const value = await getData('favorite')
+      setFavorite(value)
+    }
+    getStoredData()
+  }, [])
+
+  useEffect(() => {
+    storeData('favorite', favorite)
+  }, [favorite])
+
+  const context: IContext = {
+    addToFavorite,
+    searchCity,
+    searchData,
+    favorite
+  }
   return (
     <ApiContext.Provider
-      value={{
-        astronomyData,
-        searchData,
-        searchCity,
-        addToFavorite,
-        favorite,
-      }}>
+      value={context}>
       {children}
     </ApiContext.Provider>
   );
