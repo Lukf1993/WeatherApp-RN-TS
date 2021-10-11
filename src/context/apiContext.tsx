@@ -30,14 +30,17 @@ export const ApiContextProvider: FC<IProps> = ({ children }) => {
     fetchData(`current.json?key=${API_KEY}&q=${city}&aqi=no`).then((res) => {
       fetchData(`astronomy.json?key=${API_KEY}&q=${city}&dt=2021-07-28`).then(
         (r) => {
-          setFavorite([
-            ...favorite,
-            {
-              location: res.location,
-              current: res.current,
-              astro: r.astronomy.astro,
-            },
-          ]);
+         const checkFavorite = favorite.find(item => city.includes(item.location.name))
+         if(!checkFavorite) {
+           setFavorite([
+             ...favorite,
+             {
+               location: res.location,
+               current: res.current,
+               astro: r.astronomy.astro,
+             },
+           ]);
+         }
         },
       );
     });
