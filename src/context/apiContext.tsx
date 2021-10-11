@@ -4,7 +4,9 @@ import React, {
   createContext,
   useContext,
   ReactNode,
+  useEffect
 } from 'react';
+import storage from '~services/storage';
 import { IFavorite, ISearch, IContext } from '~services/models/Defaults.interface';
 import { fetchData } from '~services/api';
 
@@ -26,9 +28,9 @@ export const ApiContextProvider: FC<IProps> = ({ children }) => {
     );
   };
 
-  const addToFavorite = (city: string) => {
+  const addToFavorite = (city: string, date: string) => {
     fetchData(`current.json?key=${API_KEY}&q=${city}&aqi=no`).then((res) => {
-      fetchData(`astronomy.json?key=${API_KEY}&q=${city}&dt=2021-07-28`).then(
+      fetchData(`astronomy.json?key=${API_KEY}&q=${city}&dt=${date}`).then(
         (r) => {
          const checkFavorite = favorite.find(item => city.includes(item.location.name))
          if(!checkFavorite) {
@@ -45,6 +47,14 @@ export const ApiContextProvider: FC<IProps> = ({ children }) => {
       );
     });
   };
+
+  useEffect(() => {
+    storage.save({
+      key: 'favorite',
+      data: favorite,
+      expires: null
+    })
+  }, [favorite])
 
   const context: IContext = {
     addToFavorite,

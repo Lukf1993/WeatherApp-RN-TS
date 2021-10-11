@@ -1,5 +1,5 @@
 export interface IContext {
-    addToFavorite: (city: string) => void
+    addToFavorite: (city: string, date: string) => void
     searchCity: (city: string) => void
     searchData: ISearch[]
     favorite: IFavorite[]
