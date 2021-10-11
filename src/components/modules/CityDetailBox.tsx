@@ -1,29 +1,12 @@
 import React, { FC } from 'react';
 import CityDetailBar from '~components/atoms/CityDetailBar';
+import { ICurrent } from '~services/models/Defaults.interface';
 
-type Value = {
-  condition: {
-    text: string;
-  };
-  last_updated: string;
-  temp_c: number;
-  temp_f: number;
-  feelslike_c: number;
-  feelslike_f: number;
-  wind_kph: number;
-  wind_mph: number;
-  wind_degree: number;
-  pressure_mb: number;
-  pressure_in: number;
-  humidity: number;
-  cloud: number;
-  uv: number;
-};
-type Props = {
-  data: Value;
-};
+interface IProps {
+  data: ICurrent
+}
 
-const CityDetailBox: FC<Props> = ({ data }) => {
+const CityDetailBox: FC<IProps> = ({ data }) => {
   return (
     <>
       <CityDetailBar title="Condition" value={data.condition.text} />

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -7,21 +7,16 @@ import {
   TextInputChangeEventData,
 } from 'react-native';
 import { useApiContext } from '~context/apiContext';
-
 import SearchedItem from '~components/atoms/SearchedItem';
 
-type Props = {
-  [key: string]: any;
-};
-
-const SearchInput: FC<Props> = () => {
-  const apiContext: Props = useApiContext();
+const SearchInput = () => {
+  const apiContext = useApiContext();
 
   const onChange = (
     e: NativeSyntheticEvent<TextInputChangeEventData>,
   ): void => {
     const value = e.nativeEvent.text;
-    apiContext.searchCity(value);
+    apiContext?.searchCity(value);
   };
 
   return (
@@ -31,8 +26,8 @@ const SearchInput: FC<Props> = () => {
         style={styles.searchInput}
         placeholder="City"
       />
-      {apiContext.searchData &&
-        apiContext.searchData.map((item: Props) => (
+      {apiContext?.searchData &&
+        apiContext?.searchData.map((item) => (
         <SearchedItem key={item.name} name={item.name} />
       ))}
     </View>

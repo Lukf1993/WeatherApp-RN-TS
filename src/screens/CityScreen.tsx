@@ -1,22 +1,29 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { SafeAreaView, ScrollView } from 'react-native';
 import CityBox from '~components/modules/CityBox';
 import CityDetailBox from '~components/modules/CityDetailBox';
-import { useRoute } from '@react-navigation/native';
+import { ICurrent, ILocation } from '~services/models/Defaults.interface';
+import { RouteProp, useRoute } from '@react-navigation/native';
 
-type Props = {
-  [key: string]: any;
-};
+interface IParams {
+  location: ILocation
+  current: ICurrent
+}
 
-const CityScreen = () => {
-  const route: Props = useRoute();
+
+type TParamList = {
+  Detail: IParams
+}
+
+const CityScreen:FC = () => {
+  const route =  useRoute<RouteProp<TParamList, 'Detail'>>();
   return (
     <SafeAreaView>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <CityBox
-          city={route.params.location.name}
+          name={route.params.location.name}
           country={route.params.location.country}
-          date={route.params.location.localtime}
+          localtime={route.params.location.localtime}
           icon={route.params.current.condition.icon}
         />
         <CityDetailBox data={route.params.current} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -10,26 +10,13 @@ import {
 import CityBox from '~components/modules/CityBox';
 import { useApiContext } from '~context/apiContext';
 import Title from '~components/atoms/Title';
+import { IContext, IFavorite } from '~services/models/Defaults.interface';
 import { useNavigation } from '@react-navigation/native';
 
-type Props = {
-  [key: string]: any;
-};
-type Favorite = {
-  location: {
-    name: string;
-    country: string;
-    localtime: string;
-  };
-  current: {
-    condition: {
-      icon: string;
-    };
-  };
-};
+type TProps = IContext
 
-const FavoriteScreen = () => {
-  const apiContext: Props = useApiContext();
+const FavoriteScreen:FC<TProps> = () => {
+  const apiContext = useApiContext();
   const navigation = useNavigation();
   return (
     <SafeAreaView>
@@ -37,12 +24,12 @@ const FavoriteScreen = () => {
         <View style={styles.center}>
           <Title text="Favorite" />
         </View>
-        {apiContext.favorite.length === 0 ? (
+         {apiContext?.favorite.length === 0 ? (
           <View style={styles.center}>
             <Text style={styles.font20}>You don't have favorites yet</Text>
           </View>
         ) : (
-          apiContext.favorite.map((item: Favorite, index: number) => (
+          apiContext?.favorite.map((item: IFavorite, index: number) => (
             <TouchableOpacity
               key={item.location.name + index}
               onPress={() =>

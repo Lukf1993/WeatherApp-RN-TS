@@ -25,7 +25,11 @@ const App: FC = () => {
           }}>
           <Tab.Screen name="Home" component={MainScreen} />
           <Tab.Screen name="Favorite" component={FavoriteScreen} />
-          <Tab.Screen name="City" component={CityScreen} />
+          <Tab.Screen
+            name="City"
+            component={CityScreen}
+            options={{ tabBarVisible: false }}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </ApiContextProvider>

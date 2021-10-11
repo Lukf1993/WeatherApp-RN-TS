@@ -5,38 +5,20 @@ import React, {
   useContext,
   ReactNode,
 } from 'react';
+import { IFavorite, ISearch, IContext } from '~services/models/Defaults.interface';
 import { fetchData } from '~services/api';
 
-type Props = {
+interface IProps {
   children: ReactNode;
-};
+}
 
-type FavoriteArr = Array<FavoriteData>;
-
-type FavoriteData = {
-  location: {
-    name: string;
-  };
-  current: unknown;
-  astro: unknown;
-};
-
-type Search = {
-  name: string;
-  region: string;
-  country: string;
-};
-
-type SearchData = {
-  data: Array<Search>;
-};
 const API_KEY = '02e2fc9543714b12899111113212107';
 
-const ApiContext = createContext({});
+const ApiContext = createContext<IContext | null>(null);
 
-export const ApiContextProvider: FC<Props> = ({ children }) => {
-  const [searchData, setSearchData] = useState<SearchData>();
-  const [favorite, setFavorite] = useState<FavoriteArr>([]);
+export const ApiContextProvider: FC<IProps> = ({ children }) => {
+  const [searchData, setSearchData] = useState<ISearch[]>([]);
+  const [favorite, setFavorite] = useState<IFavorite[]>([]);
 
   const searchCity = async (city: string) => {
     fetchData(`search.json?key=${API_KEY}&q=${city}`).then((data) =>
@@ -61,14 +43,15 @@ export const ApiContextProvider: FC<Props> = ({ children }) => {
     });
   };
 
+  const context: IContext = {
+    addToFavorite,
+    searchCity,
+    searchData,
+    favorite
+  }
   return (
     <ApiContext.Provider
-      value={{
-        addToFavorite,
-        searchCity,
-        searchData,
-        favorite,
-      }}>
+      value={context}>
       {children}
     </ApiContext.Provider>
   );
