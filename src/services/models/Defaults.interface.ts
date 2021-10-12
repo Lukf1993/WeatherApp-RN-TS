@@ -3,6 +3,8 @@ export interface IContext {
     searchCity: (city: string) => void
     searchData: ISearch[]
     favorite: IFavorite[]
+    deleteFromFavorite: (city: string) => void
+    updateFavorite: () => void
 }
 
 export interface ISearch {

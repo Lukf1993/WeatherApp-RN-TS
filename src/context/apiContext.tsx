@@ -60,11 +60,21 @@ export const ApiContextProvider: FC<IProps> = ({ children }) => {
                astro: r.astronomy.astro,
              },
            ]);
+           setSearchData([]);
          }
         },
       );
     });
   };
+
+  const updateFavorite = () => {
+   //
+  }
+
+  const deleteFromFavorite = (city: string) => {
+    const filteredArray = favorite.filter(item => item.location.name !== city);
+    setFavorite(filteredArray);
+  }
 
   useEffect(() => {
     async function getStoredData() {
@@ -82,7 +92,9 @@ export const ApiContextProvider: FC<IProps> = ({ children }) => {
     addToFavorite,
     searchCity,
     searchData,
-    favorite
+    favorite,
+    deleteFromFavorite,
+    updateFavorite
   }
   return (
     <ApiContext.Provider

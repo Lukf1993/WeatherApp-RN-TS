@@ -1,5 +1,12 @@
-import React, { FC } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { FC, useState } from 'react';
+import { 
+  SafeAreaView, 
+  ScrollView, 
+  StyleSheet, 
+  Text, 
+  View, 
+  TouchableOpacity
+} from 'react-native';
 import SearchInput from '~components/modules/SearchInput';
 import CityBox from '~components/modules/CityBox';
 import { useApiContext } from '~context/apiContext';
@@ -8,8 +15,19 @@ import { IContext, IFavorite } from '~services/models/Defaults.interface';
 import { useNavigation } from '@react-navigation/native';
 
 const MainScreen:FC<IContext> = () => {
+  const [isOpen, setOpen] = useState<string>('')
+
   const apiContext = useApiContext();
   const navigation = useNavigation();
+
+  const toggleMenu = (value: string) => {
+    if(value === isOpen) {
+      setOpen('')
+    } else {
+      setOpen(value)
+    }
+  }
+
   return (
     <SafeAreaView>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
@@ -33,13 +51,30 @@ const MainScreen:FC<IContext> = () => {
                   location: item.location,
                   current: item.current,
                 })
-              }>
+              }
+              delayLongPress={100}
+              onLongPress={() => toggleMenu(item.location.name)}
+              >
               <CityBox
                 name={item.location.name}
                 country={item.location.country}
                 localtime={item.location.localtime}
                 icon={item.current.condition.icon}
               />
+              {isOpen === item.location.name &&
+              <>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => apiContext?.deleteFromFavorite(item.location.name)}>
+                   <Text style={styles.buttonText}> Delete</Text>
+                  </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => apiContext?.updateFavorite()}>
+                    <Text style={styles.buttonText}>Update</Text>
+                  </TouchableOpacity>
+              </>
+              }
             </TouchableOpacity>
           ))
         )}
@@ -61,6 +96,16 @@ const styles = StyleSheet.create({
   font20: {
     fontSize: 20,
   },
+  button: {
+    backgroundColor: 'grey',
+  },
+  buttonText: {
+    padding: 20,
+    fontSize: 20,
+    color: 'white',
+    borderBottomWidth: 1
+  }
+
 });
 
 export default MainScreen;
