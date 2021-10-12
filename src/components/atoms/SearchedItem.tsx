@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginRight: 15,
     marginLeft: 15,
+    zIndex: 100,
   },
   font30: {
     fontSize: 30,
